@@ -4,63 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Attendance System</title>
+<link rel="icon" href="favicon.png" type="image/png">
 
 <style>
+    /* Reset & body */
     body {
-        font-family: Arial, sans-serif;
-        background: #f3f6ff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f3f6ff, #e0ebff);
         margin: 0;
         padding: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Container */
+    .container {
+        width: 100%;
+        max-width: 900px;
     }
 
     h1 {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+        color: #2e57ff;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
+    /* Table Styling */
     table {
         width: 100%;
         border-collapse: collapse;
-        background: white;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        background: #fff;
+    }
+
+    thead {
+        background: #2e57ff;
+        color: #fff;
+        position: sticky;
+        top: 0;
     }
 
     th, td {
-        padding: 15px;
+        padding: 15px 12px;
         text-align: center;
-        border-bottom: 1px solid #ddd;
-        font-size: 18px;
+        font-size: 16px;
+        border-bottom: 1px solid #eee;
     }
 
-    th {
-        background: #2e57ff;
-        color: white;
+    tbody tr:nth-child(even) {
+        background: #f8faff;
     }
 
-    .btn {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        color: white;
-        font-size: 15px;
+    tbody tr:hover {
+        background: #d9e4ff;
+        transition: 0.2s;
     }
 
-    .present {
-        background: #28a745;
-    }
-
-    .absent {
-        background: #dc3545;
-    }
-
+    /* Status badges */
     .status {
         font-weight: bold;
-        padding: 10px;
-        border-radius: 6px;
-        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        color: #fff;
+        display: inline-block;
+        min-width: 80px;
     }
 
     .status-present {
@@ -70,110 +80,164 @@
     .status-absent {
         background: #dc3545;
     }
+
+    /* Buttons */
+    .btn {
+        padding: 7px 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 14px;
+        margin: 2px;
+        transition: 0.2s;
+    }
+
+    .btn.present {
+        background: #28a745;
+    }
+
+    .btn.present:hover {
+        background: #218838;
+    }
+
+    .btn.absent {
+        background: #dc3545;
+    }
+
+    .btn.absent:hover {
+        background: #c82333;
+    }
 </style>
 
 </head>
 <body>
 
+<div class="container">
 <h1>Student Attendance System</h1>
 
 <table>
-    <tr>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Mark Attendance</th>
-    </tr>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Mark Attendance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Upendra Yadav</td>
+            <td id="status1" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status1')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status1')">Absent</button>
+            </td>
+        </tr>
 
-    <tr>
-        <td>Michael jackson</td>
-        <td id="status1" class="status status-absent">Absent</td>
-        <td>
-            <button class="btn present" onclick="markPresent('status1')">Present</button>
-            <button class="btn absent" onclick="markAbsent('status1')">Absent</button>
-        </td>
-    </tr>
+        <tr>
+            <td>K.P. Oli</td>
+            <td id="status2" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status2')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status2')">Absent</button>
+            </td>
+        </tr>
 
-    <tr>
-        <td>Virat Kohli</td>
-        <td id="status2" class="status status-absent">Absent</td>
-        <td>
-            <button class="btn present" onclick="markPresent('status2')">Present</button>
-            <button class="btn absent" onclick="markAbsent('status2')">Absent</button>
-        </td>
-    </tr>
+        <tr>
+            <td>Virat Kohli</td>
+            <td id="status3" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status3')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status3')">Absent</button>
+            </td>
+        </tr>
 
-    <tr>
-        <td>M.S. Dhoni </td>
-        <td id="status3" class="status status-absent">Absent</td>
-        <td>
-            <button class="btn present" onclick="markPresent('status3')">Present</button>
-            <button class="btn absent" onclick="markAbsent('status3')">Absent</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Narendra Modi</td>
-        <td id="status3" class="status status-absent">Absent</td>
-        <td>
-            <button class="btn present" onclick="markPresent('status4')">Present</button>
-            <button class="btn absent" onclick="markAbsent('status4')">Absent</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Aarti Yadav</td>
-        <td id="status3" class="status status-absent">Absent</td>
-        <td>
-            <button class="btn present" onclick="markPresent('status5')">Present</button>
-            <button class="btn absent" onclick="markAbsent('status5')">Absent</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Arti Yadaw</td>
-        <td id="status3" class="status status-absent">Absent</td>
-        <td>
-            <button class="btn present" onclick="markPresent('status6')">Present</button>
-            <button class="btn absent" onclick="markAbsent('status6')">Absent</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Aayush Yadaw</td>
-        <td id="status3" class="status status-absent">Absent</td>
-        <td>
-            <button class="btn present" onclick="markPresent('status7')">Present</button>
-            <button class="btn absent" onclick="markAbsent('status7')">Absent</button>
-        </td>
-    </tr>
+        <tr>
+            <td>M.S. Dhoni</td>
+            <td id="status4" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status4')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status4')">Absent</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Narendra Modi</td>
+            <td id="status5" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status5')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status5')">Absent</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Aarti Yadav</td>
+            <td id="status6" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status6')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status6')">Absent</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Rupesh Yadav</td>
+            <td id="status7" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status7')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status7')">Absent</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Aayush Yadav</td>
+            <td id="status8" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status8')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status8')">Absent</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Harshit Chaudhary</td>
+            <td id="status9" class="status status-absent">Absent</td>
+            <td>
+                <button class="btn present" onclick="markPresent('status9')">Present</button>
+                <button class="btn absent" onclick="markAbsent('status9')">Absent</button>
+            </td>
+        </tr>
+    </tbody>
 </table>
+</div>
 
-        <script>
-            function markPresent(id) {
-                let el = document.getElementById(id);
-                el.innerHTML = "Present";
-                el.classList.remove("status-absent");
-                el.classList.add("status-present");
-            }
+<script>
+    function markPresent(id) {
+        let el = document.getElementById(id);
+        el.innerHTML = "Present";
+        el.classList.remove("status-absent");
+        el.classList.add("status-present");
+    }
 
-            function markAbsent(id) {
-                let el = document.getElementById(id);
-                el.innerHTML = "Absent";
-                el.classList.remove("status-present");
-                el.classList.add("status-absent");
-            }
-        </script>
+    function markAbsent(id) {
+        let el = document.getElementById(id);
+        el.innerHTML = "Absent";
+        el.classList.remove("status-present");
+        el.classList.add("status-absent");
+    }
+</script>
 
-        
-        <!--Start of Tawk.to Script-->
-        <script type="text/javascript">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/695a8013c597fd197ff95506/1je4o8jqk';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-        })();
-        </script>
-        <!--End of Tawk.to Script-->
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/695a8013c597fd197ff95506/1je4o8jqk';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 
 </body>
 </html>
