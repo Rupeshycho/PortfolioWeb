@@ -289,6 +289,21 @@
     <footer>
         © 2025 Rupesh Portfolio | All Rights Reserved
     </footer>
+            <script>
+            function markPresent(id) {
+                let el = document.getElementById(id);
+                el.innerHTML = "Present";
+                el.classList.remove("status-absent");
+                el.classList.add("status-present");
+            }
+
+            function markAbsent(id) {
+                let el = document.getElementById(id);
+                el.innerHTML = "Absent";
+                el.classList.remove("status-present");
+                el.classList.add("status-absent");
+            }
+        </script>
         <!--Start of Tawk.to Script-->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
