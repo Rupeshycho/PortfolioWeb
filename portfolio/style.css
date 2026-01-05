@@ -179,72 +179,103 @@
             rotate: 19deg;
         }
 
-    /*Footer yaaha xa*/
+    
     footer {
-  background: linear-gradient(135deg, #0f172a, #020617);
-  color: #e5e7eb;
-  padding: 60px 80px 30px;
-  font-family: "Segoe UI", sans-serif;
-}
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: #e5e7eb;
+    padding: 60px 20px 30px;
+    font-family: "Segoe UI", sans-serif;
+    }
 
-/* FLEX LAYOUT */
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 60px;
-}
+    
+    .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1100px;
+    margin: auto;
+    }
 
-/* LEFT */
-.dev {
-  max-width: 450px;
-}
+    /* LEFT */
+    .dev {
+    flex: 1;
+    min-width: 260px;
+    }
 
-.dev h2 {
-  font-size: 32px;
-  margin-bottom: 12px;
-  color: #ffffff;
-}
+    .dev h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: #ffffff;
+    }
 
-.dev p {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #9ca3af;
-  margin-bottom: 25px;
-}
+    .dev p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #9ca3af;
+    margin-bottom: 25px;
+    }
 
-/* RIGHT */
-.footer-right {
-  max-width: 350px;
-}
+    /* RIGHT */
+    .footer-right {
+    flex: 1;
+    min-width: 260px;
+    }
+
+    .footer-right b {
+    font-size: 26px;
+    }
+
+    .footer-right p {
+    color: #9ca3af;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    }
+
+    /* SOCIAL ICONS */
+    .socials {
+    display: flex;
+    gap: 18px;
+    }
+
+    .socials img {
+    width: 26px;
+    height: 26px;
+    opacity: 0.8;
+    transition: 0.3s;
+    }
+
+    .socials img:hover {
+    transform: scale(1.15);
+    opacity: 1;
+    }
+
+    /* COPYRIGHT */
+    .copyright {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #9ca3af;
+    }
 
 
+    @media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
 
-.footer-right p {
-  color: grey;
-  margin-bottom: 10px;
-  font-weight:bold; font-size: 16px;
-}
+    .socials {
+        justify-content: center;
+    }
 
-/* SOCIAL ICONS */
-.socials {
-  display: flex;
-  gap: 18px;
-}
+    .footer-right {
+        margin-top: 30px;
+    }
+    }
 
-.socials img {
-  width: 28px;
-  height: 28px;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-
-.socials img:hover {
-  transform: scale(1.15);
-  opacity: 1;
-}
-
-/* COPYRIGHT */
 .copyright {
   text-align: center;
   margin-top: 30px;
