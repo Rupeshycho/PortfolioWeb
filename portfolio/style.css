@@ -1,6 +1,10 @@
 
 
-        
+        a{
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -17,9 +21,8 @@
             margin: auto;
         }
 
-        /* ------------------------------
-           NAVBAR
-        ------------------------------- */
+        /* ---NAVBAR----
+        -------NavBar--------- */
         nav {
             background: #1c1c1c;
             color: white;
@@ -31,31 +34,58 @@
             z-index: 10;
         }
 
+        
         nav ul {
             display: flex;
-            list-style: none;
             gap: 25px;
-            margin: 0;
-            padding: 0;
+            list-style: none;
+        }
+        nav ul {
+            display: flex;
+            gap: 25px;
+            list-style: none;
         }
 
-        nav ul li {
+        nav ul li a {
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+
+            /* Animation setup */
+            transition: 
+                transform 0.3s ease,
+                opacity 0.3s ease,
+                color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            transform: scale(1.4);
+            opacity: 0.85;
+            color: #00ffcc; /* optional highlight */
+            font-size: 20px;
+        }
+
+
+
+
+
+        
+        nav a{
+            font-weight: 30px;
+            text-decoration: none;
             cursor: pointer;
-            font-size: 16px;
+        }
+        nav a b{
+            margin-top: 20px;
         }
 
-        nav ul li:hover {
-            color: #00d5ff;
-        }
-
-        /* ------------------------------
-           HERO
-        ------------------------------- */
+        /* ----HERO---
+        ------HERO-------*/
         .hero {
             background: linear-gradient(to right, #007bff, #00d4ff);
             color: white;
             text-align: center;
-            padding: 100px 20px;
+            padding: 30px 20px;
         }
 
         .hero h1 {
@@ -139,7 +169,7 @@
             background: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 40px 120px rgba(35, 143, 16, 0.1);
         }
 
         .project-card img {
@@ -236,18 +266,18 @@
     /* SOCIAL ICONS */
     .socials {
     display: flex;
-    gap: 18px;
+    gap: 1px;
     }
 
-    .socials img {
-    width: 26px;
-    height: 26px;
+    .socials a {
+    width: 30px;
+    height: 30px;
     opacity: 0.8;
-    transition: 0.3s;
+    transition: 0.28s;
     }
 
-    .socials img:hover {
-    transform: scale(1.15);
+    .socials a:hover {
+    transform: scale(1.45);
     opacity: 1;
     }
 
