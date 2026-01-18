@@ -282,11 +282,15 @@
     font-size: 26px;
     }
 
-    .footer-right p {
-    color: #9ca3af;
-    margin-bottom: 10px;
-    font-size: 15px;
-    font-weight: bold;
+    .footer-right p a {
+        color: #808fa7;
+        margin-bottom: 10px;
+        font-size: 15px;
+        font-weight: bold;
+        }
+        .footer-right a:hover {
+        color: #00E5FF;
+        text-decoration: underline;
     }
 
     /* SOCIAL ICONS */
@@ -315,14 +319,6 @@
     color: #9ca3af;
     }
 
-
-    @media (max-width: 768px) {
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-    }
-
     .socials {
         justify-content: center;
     }
@@ -345,3 +341,29 @@
 .cont{
     margin-bottom: 12px;
 }
+
+/*--------------==
+    Mobile Responsive
+    ==---------------
+*/
+@media (max-width: 768px) {
+        nav ul {
+            flex-direction: column; /* stack nav items */
+            gap: 15px;
+            background: #1c1c1c;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 100%;
+            display: none; /* optional, for hamburger menu */
+            padding: 10px 0;
+        }
+
+        nav ul.show {
+                display: flex; /* show when menu clicked */
+        }
+
+        nav ul li a {
+                font-size: 16px;
+        }
+    }
