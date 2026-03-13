@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf8f4;
+      --surface: #ffffff;
+      --border: #e5e0d8;
+      --ink: #1a1510;
+      --muted: #8a7f74;
+      --accent: #c0522a;
+      --accent-dark: #9a3e1e;
+      --accent-light: rgba(192,82,42,0.10);
+      --green: #3B6D11;
+      --green-bg: #EAF3DE;
+      --green-border: #97C459;
+      --coral: #993C1D;
+      --coral-bg: #FAECE7;
+      --coral-border: #F0997B;
+      --blue: #185FA5;
+      --blue-bg: #E6F1FB;
+      --blue-border: #85B7EB;
+      --amber: #854F0B;
+      --amber-bg: #FAEEDA;
+      --amber-border: #EF9F27;
+      --pink: #993556;
+      --pink-bg: #FBEAF0;
+      --pink-border: #ED93B1;
+      --gray: #5F5E5A;
+      --gray-bg: #F1EFE8;
+      --gray-border: #B4B2A9;
+      --radius: 12px;
+      --font-head: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--ink);
+      color: white;
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    header .subtitle {
+      font-size: 13px;
+      opacity: 0.5;
+      margin-left: auto;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      position: sticky;
+      top: 65px;
+      z-index: 99;
+    }
+
+    .tab {
+      padding: 14px 20px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* PANELS */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* MAIN LAYOUT */
+    .main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 20px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    /* FORM ELEMENTS */
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 12px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+      background: white;
+    }
+
+    textarea { resize: vertical; min-height: 72px; line-height: 1.6; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+    /* DIFFICULTY DOTS */
+    .diff-wrap { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+    .diff-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .diff-dot:hover { transform: scale(1.3); }
+    .diff-dot.on.easy  { background: #639922; border-color: #639922; }
+    .diff-dot.on.medium{ background: #BA7517; border-color: #BA7517; }
+    .diff-dot.on.hard  { background: #E24B4A; border-color: #E24B4A; }
+    #diff-label { font-size: 12px; color: var(--muted); margin-left: 4px; }
+
+    /* INGREDIENT ROW */
+    .ing-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 10px; }
+    .ing-row input, .ing-row select { margin-bottom: 0; }
+    .ing-row .ing-name { flex: 1; }
+    .ing-row .ing-amt  { width: 90px; }
+    .ing-row select    { width: 120px; }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--surface);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.12s;
+    }
+
+    .btn:hover { background: var(--bg); border-color: var(--muted); }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-accent {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .btn-accent:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+
+    .btn-full { width: 100%; justify-content: center; }
+    .btn-sm { padding: 5px 10px; font-size: 13px; }
+
+    /* TAGS */
+    .tag-area { display: flex; flex-wrap: wrap; gap: 6px; min-height: 36px; padding: 6px 0; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 400;
+      border: 1px solid;
+      animation: tagIn 0.2s ease;
+    }
+
+    @keyframes tagIn {
+      from { opacity: 0; transform: scale(0.85); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .tag .remove { cursor: pointer; opacity: 0.5; font-size: 15px; line-height: 1; }
+    .tag .remove:hover { opacity: 1; }
+
+    .tag.produce { background: var(--green-bg);  color: var(--green);  border-color: var(--green-border); }
+    .tag.protein { background: var(--coral-bg);  color: var(--coral);  border-color: var(--coral-border); }
+    .tag.dairy   { background: var(--blue-bg);   color: var(--blue);   border-color: var(--blue-border);  }
+    .tag.grains  { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber-border); }
+    .tag.spices  { background: var(--pink-bg);   color: var(--pink);   border-color: var(--pink-border);  }
+    .tag.other   { background: var(--gray-bg);   color: var(--gray);   border-color: var(--gray-border);  }
+
+    /* FILTER PILLS */
+    .filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .filter-pill {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .filter-pill:hover { opacity: 0.7; }
+    .filter-pill.all { background: var(--gray-bg); color: var(--gray); border-color: var(--gray-border); }
+
+    /* STEPS */
+    .step-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      animation: tagIn 0.2s ease;
+    }
+
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .step-row input {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .step-del {
+      padding: 8px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 6px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .step-del:hover { color: #E24B4A; border-color: #E24B4A; }
+
+    /* METRICS */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .metric .val {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .metric .lbl {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* PREVIEW */
+    #preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    #preview-card h2 {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    #preview-card .recipe-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    #preview-card .recipe-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    #preview-card .section-head {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin: 20px 0 12px;
+    }
+
+    #preview-card .ing-group-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin: 10px 0 4px;
+    }
+
+    #preview-card .ing-item {
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    #preview-card .step-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    #preview-card .step-n {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    #preview-card .notes-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* PRINT */
+    @media print {
+      header, .tabs, .metrics, #build, .btn { display: none !important; }
+      #preview { display: block !important; }
+      #preview-card { border: none; padding: 0; }
+      body { background: white; }
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      header { padding: 16px; }
+      .tabs  { padding: 0 16px; top: 57px; }
+      .main  { padding: 16px 12px; }
+      .card  { padding: 16px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .metric .val { font-size: 1.5rem; }
+      .ing-row { flex-wrap: wrap; }
+      .ing-row .ing-amt, .ing-row select { width: calc(50% - 4px); }
+      .ing-row .ing-name { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Recipe Builder</h1>
+    <span class="subtitle">Build · Preview · Print</span>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('build')">Build</button>
+    <button class="tab" onclick="showTab('preview');buildPreview()">Preview</button>
+  </div>
+
+  <!-- BUILD PANEL -->
+  <div id="build" class="panel active">
+    <div class="main">
+
+      <!-- INFO -->
+      <div class="card">
+        <div class="card-title">Recipe Info</div>
+        <label>Recipe name</label>
+        <input type="text" id="recipeName" placeholder="e.g. Spicy Momo Soup">
+        <div class="grid-2">
+          <div>
+            <label>Prep time (min)</label>
+            <input type="number" id="prepTime" placeholder="15" min="0" oninput="updateMeta()">
+          </div>
+          <div>
+            <label>Cook time (min)</label>
+            <input type="number" id="cookTime" placeholder="30" min="0" oninput="updateMeta()">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <label>Servings</label>
+            <input type="number" id="servings" placeholder="4" min="1">
+          </div>
+          <div>
+            <label>Difficulty</label>
+            <div class="diff-wrap">
+              <div class="diff-dot easy"   id="d1" onclick="setDiff(1)"></div>
+              <div class="diff-dot easy"   id="d2" onclick="setDiff(2)"></div>
+              <div class="diff-dot medium" id="d3" onclick="setDiff(3)"></div>
+              <div class="diff-dot medium" id="d4" onclick="setDiff(4)"></div>
+              <div class="diff-dot hard"   id="d5" onclick="setDiff(5)"></div>
+              <span id="diff-label">Not set</span>
+            </div>
+          </div>
+        </div>
+        <label>Description</label>
+        <textarea id="description" placeholder="A short note about this dish..."></textarea>
+      </div>
+
+      <!-- INGREDIENTS -->
+      <div class="card">
+        <div class="card-title">
+          Ingredients
+          <span class="badge" id="ing-count">0</span>
+        </div>
+        <div class="ing-row">
+          <input type="text" class="ing-name" id="ingName" placeholder="Ingredient name" onkeydown="if(event.key==='Enter')addIng()">
+          <input type="text" class="ing-amt"  id="ingAmt"  placeholder="Amount" onkeydown="if(event.key==='Enter')addIng()">
+          <select id="ingCat">
+            <option value="produce">Produce</option>
+            <option value="protein">Protein</option>
+            <option value="dairy">Dairy</option>
+            <option value="grains">Grains</option>
+            <option value="spices">Spices</option>
+            <option value="other">Other</option>
+          </select>
+          <button class="btn btn-accent" onclick="addIng()">+ Add</button>
+        </div>
+        <div class="tag-area" id="tag-area"></div>
+        <div class="filter-row">
+          <span style="font-size:12px;color:var(--muted);align-self:center">Filter:</span>
+          <span class="filter-pill produce tag produce" onclick="filterIng('produce')">Produce</span>
+          <span class="filter-pill protein tag protein" onclick="filterIng('protein')">Protein</span>
+          <span class="filter-pill dairy   tag dairy"   onclick="filterIng('dairy')">Dairy</span>
+          <span class="filter-pill grains  tag grains"  onclick="filterIng('grains')">Grains</span>
+          <span class="filter-pill spices  tag spices"  onclick="filterIng('spices')">Spices</span>
+          <span class="filter-pill all"                 onclick="filterIng('all')">All</span>
+        </div>
+      </div>
+
+      <!-- STEPS -->
+      <div class="card">
+        <div class="card-title">
+          Steps
+          <span class="badge" id="step-count">0</span>
+        </div>
+        <div id="steps-list"></div>
+        <button class="btn" onclick="addStep()">+ Add step</button>
+      </div>
+
+      <!-- NOTES -->
+      <div class="card">
+        <div class="card-title">Notes & Tips</div>
+        <textarea id="notes" placeholder="Substitutions, storage tips, allergy notes..."></textarea>
+      </div>
+
+      <!-- METRICS -->
+      <div class="metrics">
+        <div class="metric">
+          <div class="val" id="m-time">0</div>
+          <div class="lbl">Total min</div>
+        </div>
+        <div class="metric">
+          <div class="val" id="m-ing">0</div>
+          <div class="lbl">Ingredients</div>
+        </div>
+        <div class="metric">
+          <div class="val" id="m-steps">0</div>
+          <div class="lbl">Steps</div>
+        </div>
+      </div>
+
+      <button class="btn btn-accent btn-full" onclick="showTab('preview');buildPreview()">
+        Preview Recipe Card →
+      </button>
+
+    </div>
+  </div>
+
+  <!-- PREVIEW PANEL -->
+  <div id="preview" class="panel">
+    <div class="main">
+      <div id="preview-card">
+        <p style="color:var(--muted)">Fill in the builder first, then click Preview.</p>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn" onclick="showTab('build')">← Back to builder</button>
+        <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── STATE ──
+    let ingredients = [];
+    let steps = [];
+    let diffLevel = 0;
+    let currentFilter = 'all';
+
+    // ── TABS ──
+    function showTab(name) {
+      document.querySelectorAll('.tab').forEach((t, i) =>
+        t.classList.toggle('active', ['build', 'preview'][i] === name)
+      );
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(name).classList.add('active');
+    }
+
+    // ── DIFFICULTY ──
+    function setDiff(n) {
+      diffLevel = n;
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById('d' + i).classList.toggle('on', i <= n);
+      }
+      const labels = ['', 'Easy', 'Easy', 'Medium', 'Medium', 'Hard'];
+      document.getElementById('diff-label').textContent = labels[n] || 'Not set';
+    }
+
+    // ── INGREDIENTS ──
+    function addIng() {
+      const name = document.getElementById('ingName').value.trim();
+      const amt  = document.getElementById('ingAmt').value.trim();
+      const cat  = document.getElementById('ingCat').value;
+      if (!name) return;
+      ingredients.push({ id: Date.now(), name, amt, cat });
+      document.getElementById('ingName').value = '';
+      document.getElementById('ingAmt').value = '';
+      document.getElementById('ingName').focus();
+      renderTags();
+      updateMeta();
+    }
+
+    function removeIng(id) {
+      ingredients = ingredients.filter(i => i.id !== id);
+      renderTags();
+      updateMeta();
+    }
+
+    function filterIng(f) {
+      currentFilter = f;
+      renderTags();
+    }
+
+    function renderTags() {
+      const area = document.getElementById('tag-area');
+      area.innerHTML = '';
+      const list = currentFilter === 'all'
+        ? ingredients
+        : ingredients.filter(i => i.cat === currentFilter);
+      list.forEach(ing => {
+        const div = document.createElement('div');
+        div.className = 'tag ' + ing.cat;
+        div.innerHTML = (ing.amt ? '<b>' + ing.amt + '</b> ' : '') + ing.name +
+          ' <span class="remove" onclick="removeIng(' + ing.id + ')">×</span>';
+        area.appendChild(div);
+      });
+      document.getElementById('ing-count').textContent = ingredients.length;
+    }
+
+    // ── STEPS ──
+    function addStep() {
+      const id = Date.now();
+      steps.push({ id, text: '' });
+      renderSteps();
+    }
+
+    function removeStep(id) {
+      steps = steps.filter(s => s.id !== id);
+      renderSteps();
+    }
+
+    function renderSteps() {
+      const list = document.getElementById('steps-list');
+      list.innerHTML = '';
+      steps.forEach((s, idx) => {
+        const row = document.createElement('div');
+        row.className = 'step-row';
+        row.innerHTML = `
+          <div class="step-num">${idx + 1}</div>
+          <input type="text" placeholder="Describe step ${idx + 1}..."
+            value="${s.text.replace(/"/g, '&quot;')}"
+            oninput="steps[${idx}].text = this.value; updateMeta()">
+          <button class="step-del" onclick="removeStep(${s.id})">✕</button>
+        `;
+        list.appendChild(row);
+      });
+      document.getElementById('step-count').textContent = steps.length;
+      updateMeta();
+    }
+
+    // ── META ──
+    function updateMeta() {
+      const prep = parseInt(document.getElementById('prepTime').value) || 0;
+      const cook = parseInt(document.getElementById('cookTime').value) || 0;
+      document.getElementById('m-time').textContent = prep + cook;
+      document.getElementById('m-ing').textContent  = ingredients.length;
+      document.getElementById('m-steps').textContent = steps.length;
+    }
+
+    // ── PREVIEW ──
+    function buildPreview() {
+      const name = document.getElementById('recipeName').value || 'Untitled Recipe';
+      const prep = document.getElementById('prepTime').value;
+      const cook = document.getElementById('cookTime').value;
+      const serv = document.getElementById('servings').value;
+      const desc = document.getElementById('description').value;
+      const notes = document.getElementById('notes').value;
+      const diffs = ['', 'Easy', 'Easy', 'Medium', 'Medium', 'Hard'];
+      const diff = diffs[diffLevel] || '';
+
+      // meta bar
+      const metaItems = [];
+      if (prep) metaItems.push('<span>Prep: ' + prep + ' min</span>');
+      if (cook) metaItems.push('<span>Cook: ' + cook + ' min</span>');
+      if (serv) metaItems.push('<span>Serves: ' + serv + '</span>');
+      if (diff) metaItems.push('<span>Difficulty: ' + diff + '</span>');
+
+      // ingredients grouped
+      const cats = ['produce','protein','dairy','grains','spices','other'];
+      const catNames = { produce:'Produce', protein:'Protein', dairy:'Dairy',
+                         grains:'Grains', spices:'Spices', other:'Other' };
+      let ingHtml = '';
+      cats.forEach(c => {
+        const group = ingredients.filter(i => i.cat === c);
+        if (!group.length) return;
+        ingHtml += '<div class="ing-group-label">' + catNames[c] + '</div>';
+        group.forEach(i => {
+          ingHtml += '<div class="ing-item">' +
+            (i.amt ? '<b>' + i.amt + '</b> ' : '') + i.name + '</div>';
+        });
+      });
+
+      // steps
+      const stepsHtml = steps.map((s, i) =>
+        '<div class="step-item">' +
+        '<div class="step-n">' + (i + 1) + '</div>' +
+        '<div>' + (s.text || '<em style="opacity:.5">Empty step</em>') + '</div>' +
+        '</div>'
+      ).join('');
+
+      document.getElementById('preview-card').innerHTML =
+        '<h2>' + name + '</h2>' +
+        (metaItems.length ? '<div class="recipe-meta">' + metaItems.join('') + '</div>' : '') +
+        (desc ? '<p style="color:var(--muted);font-size:14px;margin-bottom:16px">' + desc + '</p>' : '') +
+        (ingHtml ? '<div class="section-head">Ingredients</div>' + ingHtml : '') +
+        (stepsHtml ? '<div class="section-head">Instructions</div>' + stepsHtml : '') +
+        (notes ? '<div class="section-head">Notes</div><div class="notes-box">' + notes + '</div>' : '');
+    }
+  </script>
+
+</body>
+</html>
