@@ -1,0 +1,259 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+ 
+/* ── TOKENS ── */
+:root {
+  --bg:         #f5f0e8;
+  --paper:      #fdfaf4;
+  --ink:        #1c1510;
+  --muted:      #7a6a58;
+  --terra:      #c0522a;
+  --terra-dark: #9a3e1e;
+  --terra-glow: rgba(192, 82, 42, 0.18);
+  --border:     #d9cfc0;
+  --shadow:     rgba(28, 21, 16, 0.10);
+  --radius:     14px;
+  --font-head:  'Playfair Display', Georgia, serif;
+  --font-body:  'DM Sans', sans-serif;
+}
+ 
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+/* ── BASE ── */
+html {
+  font-size: clamp(15px, 1.8vw, 17px);
+  scroll-behavior: smooth;
+}
+ 
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--ink);
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.2rem, 5vw, 3rem);
+ 
+  /* subtle paper grain */
+  background-image:
+    radial-gradient(ellipse at 70% 10%, rgba(192,82,42,0.07) 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+ 
+/* ── SECTION ── */
+#contact {
+  width: 100%;
+  max-width: 560px;
+}
+ 
+/* ── HEADING ── */
+#contact h2 {
+  font-family: var(--font-head);
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+  line-height: 1.15;
+  position: relative;
+  display: inline-block;
+}
+ 
+/* decorative underline stroke */
+#contact h2::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 3px;
+  background: var(--terra);
+  border-radius: 2px;
+  margin: 0.45rem auto 0;
+}
+ 
+/* ── FORM CARD ── */
+form {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.5);
+  padding: clamp(1.6rem, 5vw, 2.6rem) clamp(1.4rem, 5vw, 2.4rem);
+  margin-top: 2rem;
+  box-shadow:
+    0 2px 8px var(--shadow),
+    0 12px 40px rgba(28,21,16,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2.5vw, 1.15rem);
+ 
+  /* subtle entrance */
+  animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+ 
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+ 
+/* ── INPUTS & TEXTAREA ── */
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 2.2vw, 0.97rem);
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(0.7rem, 2vw, 0.85rem) clamp(0.9rem, 2.5vw, 1.1rem);
+  outline: none;
+  transition:
+    border-color 0.22s ease,
+    box-shadow   0.22s ease,
+    background   0.22s ease;
+  resize: none;             /* textarea handled separately */
+  -webkit-appearance: none;
+}
+ 
+textarea {
+  resize: vertical;
+  min-height: 120px;
+  max-height: 260px;
+  line-height: 1.6;
+}
+ 
+/* placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 0.9em;
+  letter-spacing: 0.01em;
+}
+ 
+/* focus ring */
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  border-color: var(--terra);
+  background: var(--paper);
+  box-shadow: 0 0 0 4px var(--terra-glow);
+}
+ 
+/* valid state — subtle green tick feel */
+input:valid:not(:placeholder-shown),
+textarea:valid:not(:placeholder-shown) {
+  border-color: #7aab6e;
+}
+ 
+/* ── SUBMIT BUTTON ── */
+button[type="submit"] {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 2.2vw, 0.98rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--terra);
+  border: none;
+  border-radius: var(--radius);
+  padding: clamp(0.75rem, 2.2vw, 0.9rem) clamp(1.4rem, 4vw, 2rem);
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.2rem;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background  0.22s ease,
+    box-shadow  0.22s ease,
+    transform   0.14s ease;
+ 
+  /* shimmer layer */
+}
+ 
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+ 
+button[type="submit"]:hover::before {
+  transform: translateX(100%);
+}
+ 
+button[type="submit"]:hover {
+  background: var(--terra-dark);
+  box-shadow: 0 6px 22px rgba(192, 82, 42, 0.32);
+  transform: translateY(-2px);
+}
+ 
+button[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(192, 82, 42, 0.2);
+}
+ 
+/* ── HIDDEN INPUT ── */
+input[type="hidden"] { display: none; }
+ 
+/* ── FIELD LABELS (optional enhancement) ─
+   If you ever add <label> tags, they'll look right */
+label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: -0.5rem;
+}
+ 
+/* ── RESPONSIVE TWEAKS ── */
+ 
+/* Tablet */
+@media (max-width: 640px) {
+  form {
+    border-radius: var(--radius);
+    padding: 1.5rem 1.2rem;
+  }
+}
+ 
+/* Phone portrait */
+@media (max-width: 400px) {
+  html { font-size: 15px; }
+ 
+  #contact h2 {
+    font-size: 1.75rem;
+  }
+ 
+  form {
+    gap: 0.85rem;
+    padding: 1.25rem 1rem;
+  }
+ 
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.93rem;
+  }
+}
+ 
+/* Large / zoomed screens */
+@media (min-width: 900px) {
+  #contact {
+    max-width: 600px;
+  }
+}
+ 
+/* High zoom / accessibility */
+@media (max-width: 320px) {
+  html { font-size: 14px; }
+  form { padding: 1rem 0.85rem; }
+}
